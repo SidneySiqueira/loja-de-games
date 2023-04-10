@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { RootState } from "@/Redux/store";
 import { Product } from "@/Utils/types";
 import { Divider, useMediaQuery } from "@mui/material";
+import isEquivalent from "@/Utils/isEquivalent";
 
 interface ProductListMenagerProps {
     products: Product,
@@ -20,6 +21,8 @@ export default function ProductListMenager({ products, setShowModal }: ProductLi
     const promotionProduct: Product[] = useSelector((state: RootState) => state.promotionProduct.promotionProduct);
 
     const isMobile = useMediaQuery("(max-width:768px)");
+
+    const listProducts = products ? Object.values(products) : [] as Product[];
 
     useEffect(() => {
         dispatch(fetchFeaturedProduct())
@@ -37,12 +40,17 @@ export default function ProductListMenager({ products, setShowModal }: ProductLi
         const productsArray = products ? Object.entries(products) : [];
         const existingProduct = productsArray.find(([_, product]) => product.image === item.image);
         existingProduct && await dispatch(deleteApi(existingProduct[0]));
+        if (isEquivalent(item, featuredProducts)) {
+            handleFeatured(listProducts[0])
+        } 
+        if (isEquivalent(item, promotionProduct)) {
+            handlePromotion(listProducts[1])
+        }
         setTimeout(() => {
             document.location.reload();
         }, 500);
     };
 
-    const listProducts = products ? Object.values(products) : [] as Product[];
 
     const handleFeatured = (choice: Product) => {
         dispatch(updateFeaturedProduct(choice))
