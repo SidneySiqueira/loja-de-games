@@ -37,7 +37,7 @@ const FormModal = ({ setShowModal, setLoading }: FormModalProps) => {
     const { products } = useSelector((state: RootState) => state.api);
     const [formData, setFormData] = useState<FormData>(selectProduct as FormData);
     const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
-    
+
     const dispatch: ThunkDispatch<RootState, undefined, Action<any>> = useDispatch();
 
     const handlePost = async (array: Product) => {
@@ -115,7 +115,7 @@ const FormModal = ({ setShowModal, setLoading }: FormModalProps) => {
                 <S.Close className="close" onClick={handleCloseModal}>
                     X
                 </S.Close>
-                <S.Title>{formData.name  === '' ? 'Adicionar Produto' : 'Editar Produto'}</S.Title>
+                <S.Title>{formData.name === '' ? 'Adicionar Produto' : 'Editar Produto'}</S.Title>
                 <S.Form onSubmit={handleSubmit}>
                     <S.FormGroup>
                         <S.Atribute>Nome</S.Atribute>
@@ -139,7 +139,7 @@ const FormModal = ({ setShowModal, setLoading }: FormModalProps) => {
                     </S.FormGroup>}
                     <S.FormGroup>
                         <S.Atribute>Preço</S.Atribute>
-                        <S.Input type="text" name="price" value={formData.price} onChange={handleInputChange} />
+                        <S.Input type="number" pattern="[0-9]*" name="price" value={formData.price} onChange={handleInputChange} />
                         {formErrors.price && <span className="error">{formErrors.price}</span>}
                     </S.FormGroup>
                     <S.FormGroup>
